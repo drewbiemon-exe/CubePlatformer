@@ -9,15 +9,31 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/WebGLOptimized1.json", {onProgress: UnityProgress});
+      // Define the variable, but DO NOT start the game yet
+      var gameInstance;
+
+      // This function runs only when you click the button
+      function startGame() {
+          // Hide the overlay button
+          document.getElementById("loadingOverlay").style.display = "none";
+
+          // NOW we start Unity. Because this is inside a "click" event, 
+          // the browser will allow the audio to play!
+          gameInstance = UnityLoader.instantiate("gameContainer", "Build/WebGLOptimized1.json", {onProgress: UnityProgress});
+      }
     </script>
   </head>
   <body>
-    <div class="webgl-content">
+    <div class="webgl-content" style="position: relative;">
+      
+      <div id="loadingOverlay" onclick="startGame()" style="position:absolute; width: 960px; height: 600px; background:black; display:flex; justify-content:center; align-items:center; z-index:100; cursor:pointer;">
+           <h1 style="color:white; font-family:sans-serif; border: 4px solid white; padding: 20px; text-transform: uppercase;">Click to Play</h1>
+      </div>
+
       <div id="gameContainer" style="width: 960px; height: 600px"></div>
       <div class="footer">
         <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+        <div class="fullscreen" onclick="if(gameInstance) gameInstance.SetFullscreen(1)"></div>
         <div class="title">The Sky High Block Biggie Boi Brigade</div>
       </div>
     </div>
